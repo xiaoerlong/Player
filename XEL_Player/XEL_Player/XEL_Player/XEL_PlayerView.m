@@ -26,6 +26,7 @@
 // 视频控制view
 @property (nonatomic, strong) XEL_ControlView *controlView;
 
+
 // 手势相关
 @property (nonatomic, strong) UITapGestureRecognizer *singleTapGesture; // 单击显示控制层
 @property (nonatomic, strong) UITapGestureRecognizer *doubleTapGesture; // 双击控制播放暂停
@@ -45,7 +46,6 @@
 // xib或storyboard初始化
 - (void)awakeFromNib {
     [super awakeFromNib];
-    
     self.backgroundColor = [UIColor blackColor];
 }
 
@@ -175,12 +175,17 @@
 #pragma mark Setter
 - (void)setURL:(NSURL *)URL {
     _URL = URL;
-     _controlView = [[XEL_ControlView alloc] initWithFrame:self.bounds];
+    _controlView = [[XEL_ControlView alloc] initWithFrame:self.bounds];
     [self addSubview:_controlView];
     [self configurePlayerComponents];
     
     // 添加手势
     [self createGesture];
+}
+
+- (void)setTitle:(NSString *)title {
+    _title = title;
+    _controlView.title = title;
 }
 
 - (void)setPlayerState:(XELPlayerState)playerState {

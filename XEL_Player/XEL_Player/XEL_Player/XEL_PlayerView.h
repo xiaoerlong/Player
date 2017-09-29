@@ -28,6 +28,8 @@ typedef NS_ENUM(NSUInteger, XELPlayerLayerGravity) {
 
 /// 视频播放地址
 @property (nonatomic, copy) NSURL *URL;
+/// 视频标题
+@property (nonatomic, copy) NSString *title;
 /// 填充模式
 @property (nonatomic, assign) XELPlayerLayerGravity playerLayerGravity;
 

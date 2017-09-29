@@ -17,6 +17,10 @@ static const CGFloat bottomHeight = 50;
 @property (nonatomic, strong) UIView *topView;
 // 底部的控制视图
 @property (nonatomic, strong) UIView *bottomView;
+// 顶部返回按钮
+@property (nonatomic, strong) UIButton *backButton;
+// 顶部标题
+@property (nonatomic, strong) UILabel *titleLabel;
 // 锁定屏幕按钮
 @property (nonatomic, strong) UIButton *lockButton;
 // control view是否正在显示
@@ -49,6 +53,9 @@ static const CGFloat bottomHeight = 50;
     CGFloat height = CGRectGetHeight(self.frame);
     
     self.topView.frame = CGRectMake(0, 0, width, topHeight);
+    self.backButton.frame = CGRectMake(15, 0, 40, self.topView.xel_height);
+    self.titleLabel.frame = CGRectMake(65, 0, self.topView.xel_width - 65 - 65, self.topView.xel_height);
+    
     self.bottomView.frame = CGRectMake(0, height - bottomHeight, width, bottomHeight);
     
     self.lockButton.frame = CGRectMake(15, 0, 40, 40);
@@ -69,6 +76,11 @@ static const CGFloat bottomHeight = 50;
         [self showControlView];
     }
     self.lockScreen = !self.lockScreen;
+}
+
+// 全屏时候返回
+- (void)backAction:(UIButton *)btn {
+    NSLog(@"点击按钮返回");
 }
 
 #pragma mark -
@@ -106,12 +118,32 @@ static const CGFloat bottomHeight = 50;
 }
 
 #pragma mark -
+#pragma mark Setter
+- (void)setTitle:(NSString *)title {
+    _title = title;
+    self.titleLabel.text = title;
+}
+
+#pragma mark -
 #pragma mark Getter
 
 - (UIView *)topView {
     if (!_topView) {
         _topView = [[UIView alloc] init];
-        _topView.backgroundColor = [UIColor redColor];
+        _topView.backgroundColor = [UIColor clearColor];
+        
+        // 返回按钮
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [backButton setImage:[UIImage imageNamed:[@"XEL_Player.bundle" stringByAppendingPathComponent:@"ZFPlayer_back_full"]] forState:UIControlStateNormal];
+        [backButton addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_topView addSubview:backButton];
+        _backButton = backButton;
+        // 视频标题
+        UILabel *titleLabel = [[UILabel alloc] init];
+        titleLabel.textColor = [UIColor whiteColor];
+        titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+        [_topView addSubview:titleLabel];
+        _titleLabel = titleLabel;
     }
     return _topView;
 }
@@ -119,7 +151,7 @@ static const CGFloat bottomHeight = 50;
 - (UIView *)bottomView {
     if (!_bottomView) {
         _bottomView = [[UIView alloc] init];
-        _bottomView.backgroundColor = [UIColor greenColor];
+        _bottomView.backgroundColor = [UIColor clearColor];
     }
     return _bottomView;
 }

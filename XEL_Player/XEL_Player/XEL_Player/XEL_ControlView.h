@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface XEL_ControlView : UIView
+/// 视频标题
+@property (nonatomic, copy) NSString *title;
+/// 显示或隐藏控制层
 - (void)showOrHiddenControlView;
 @end
