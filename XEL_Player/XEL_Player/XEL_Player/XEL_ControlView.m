@@ -21,6 +21,8 @@ static const CGFloat bottomHeight = 50;
 @property (nonatomic, strong) UIButton *backButton;
 // 顶部标题
 @property (nonatomic, strong) UILabel *titleLabel;
+// 播放控制按钮
+@property (nonatomic, strong) UIButton *playbackButton;
 // 锁定屏幕按钮
 @property (nonatomic, strong) UIButton *lockButton;
 // control view是否正在显示
@@ -53,10 +55,11 @@ static const CGFloat bottomHeight = 50;
     CGFloat height = CGRectGetHeight(self.frame);
     
     self.topView.frame = CGRectMake(0, 0, width, topHeight);
-    self.backButton.frame = CGRectMake(15, 0, 40, self.topView.xel_height);
+    self.backButton.frame = CGRectMake(10, 0, 40, self.topView.xel_height);
     self.titleLabel.frame = CGRectMake(65, 0, self.topView.xel_width - 65 - 65, self.topView.xel_height);
     
     self.bottomView.frame = CGRectMake(0, height - bottomHeight, width, bottomHeight);
+    self.playbackButton.frame = CGRectMake(10, 0, 40, self.topView.xel_height);
     
     self.lockButton.frame = CGRectMake(15, 0, 40, 40);
     self.lockButton.xel_centerY = self.center.y;
@@ -83,10 +86,21 @@ static const CGFloat bottomHeight = 50;
     NSLog(@"点击按钮返回");
 }
 
+// 播放控制
+- (void)playbackAction:(UIButton *)btn {
+    if (btn.selected) { // 正在播放中
+        // 点击按钮暂停
+        [self xel_playerPlayBackButtonState:NO];
+    } else {
+        // 点击按钮播放
+        [self xel_playerPlayBackButtonState:YES];
+    }
+}
+
 #pragma mark -
 #pragma mark Private
 //
-- (void)showOrHiddenControlView {
+- (void)xel_showOrHiddenControlView {
     if (self.controlViewIsShowing == YES) {
         [self hiddenControlView];
     } else {
@@ -115,6 +129,10 @@ static const CGFloat bottomHeight = 50;
     } completion:^(BOOL finished) {
         self.controlViewIsShowing = YES;
     }];
+}
+
+- (void)xel_playerPlayBackButtonState:(BOOL)isPlay {
+    self.playbackButton.selected = isPlay;
 }
 
 #pragma mark -
@@ -152,6 +170,13 @@ static const CGFloat bottomHeight = 50;
     if (!_bottomView) {
         _bottomView = [[UIView alloc] init];
         _bottomView.backgroundColor = [UIColor clearColor];
+        
+        // 播放控制按钮 播放/暂停
+        _playbackButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_playbackButton setImage:[UIImage imageNamed:[@"XEL_Player.bundle" stringByAppendingPathComponent:@"ZFPlayer_play"]] forState:UIControlStateNormal];
+        [_playbackButton setImage:[UIImage imageNamed:[@"XEL_Player.bundle" stringByAppendingPathComponent:@"ZFPlayer_pause"]] forState:UIControlStateSelected];
+        [_playbackButton addTarget:self action:@selector(playbackAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_bottomView addSubview:_playbackButton];
     }
     return _bottomView;
 }

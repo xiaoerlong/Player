@@ -22,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3A1901AB1F7E578A005471F6 /* XEL_ControlViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XEL_ControlViewDelegate.h; sourceTree = "<group>"; };
 		3A5CDABF1F7C9A1200C2121C /* XEL_Player.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XEL_Player.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A5CDAC31F7C9A1200C2121C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3A5CDAC51F7C9A1200C2121C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -100,6 +101,7 @@
 		3A5CDAD91F7C9B8200C2121C /* XEL_Player */ = {
 			isa = PBXGroup;
 			children = (
+				3A1901AB1F7E578A005471F6 /* XEL_ControlViewDelegate.h */,
 				3A5CDADA1F7C9BCA00C2121C /* XEL_PlayerView.h */,
 				3A5CDADB1F7C9BCA00C2121C /* XEL_PlayerView.m */,
 				3AD384EA1F7CB38500314C5A /* XEL_ControlView.h */,

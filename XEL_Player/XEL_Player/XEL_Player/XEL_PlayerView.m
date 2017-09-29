@@ -145,7 +145,7 @@
 
 // 显示或者隐藏控制视图
 - (void)showOrHiddenControlView {
-    [self.controlView showOrHiddenControlView];
+    [self.controlView xel_showOrHiddenControlView];
 }
 
 #pragma mark -
@@ -194,11 +194,14 @@
         // 提示播放失败
     } else if (playerState == XELPlayerStateBuffering) {
         // 提示缓冲中，加载进度条
+        
     } else if (playerState == XELPlayerStatePlay) {
         // 播放
+        [_controlView xel_playerPlayBackButtonState:YES];
         [_player play];
     } else if (playerState == XELPlayerStatePause) {
         // 暂停播放
+        [_controlView xel_playerPlayBackButtonState:NO];
         [_player pause];
     } else if (playerState == XELPlayerStateStop) {
         // 停止播放

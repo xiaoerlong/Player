@@ -12,5 +12,7 @@
 /// 视频标题
 @property (nonatomic, copy) NSString *title;
 /// 显示或隐藏控制层
-- (void)showOrHiddenControlView;
+- (void)xel_showOrHiddenControlView;
+// 播放按钮的状态
+- (void)xel_playerPlayBackButtonState:(BOOL)isPlay;
 @end
