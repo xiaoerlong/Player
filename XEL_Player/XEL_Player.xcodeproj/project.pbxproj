@@ -17,6 +17,8 @@
 		3A5CDADE1F7C9C0D00C2121C /* Doc in Resources */ = {isa = PBXBuildFile; fileRef = 3A5CDADD1F7C9C0D00C2121C /* Doc */; };
 		3A5CDAE01F7CAE2400C2121C /* login_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 3A5CDADF1F7CABB700C2121C /* login_video.mp4 */; };
 		3AD384EC1F7CB38500314C5A /* XEL_ControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD384EB1F7CB38500314C5A /* XEL_ControlView.m */; };
+		3AEDBF741F7E1FA1002C62D9 /* UIView+XEL_Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AEDBF731F7E1FA1002C62D9 /* UIView+XEL_Frame.m */; };
+		3AEDBF761F7E21C4002C62D9 /* XEL_Player.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3AEDBF751F7E21C4002C62D9 /* XEL_Player.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,9 @@
 		3A5CDADF1F7CABB700C2121C /* login_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = login_video.mp4; sourceTree = "<group>"; };
 		3AD384EA1F7CB38500314C5A /* XEL_ControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XEL_ControlView.h; sourceTree = "<group>"; };
 		3AD384EB1F7CB38500314C5A /* XEL_ControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XEL_ControlView.m; sourceTree = "<group>"; };
+		3AEDBF721F7E1FA1002C62D9 /* UIView+XEL_Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+XEL_Frame.h"; sourceTree = "<group>"; };
+		3AEDBF731F7E1FA1002C62D9 /* UIView+XEL_Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+XEL_Frame.m"; sourceTree = "<group>"; };
+		3AEDBF751F7E21C4002C62D9 /* XEL_Player.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = XEL_Player.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +104,9 @@
 				3A5CDADB1F7C9BCA00C2121C /* XEL_PlayerView.m */,
 				3AD384EA1F7CB38500314C5A /* XEL_ControlView.h */,
 				3AD384EB1F7CB38500314C5A /* XEL_ControlView.m */,
+				3AEDBF721F7E1FA1002C62D9 /* UIView+XEL_Frame.h */,
+				3AEDBF731F7E1FA1002C62D9 /* UIView+XEL_Frame.m */,
+				3AEDBF751F7E21C4002C62D9 /* XEL_Player.bundle */,
 			);
 			path = XEL_Player;
 			sourceTree = "<group>";
@@ -162,6 +170,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AEDBF761F7E21C4002C62D9 /* XEL_Player.bundle in Resources */,
 				3A5CDAE01F7CAE2400C2121C /* login_video.mp4 in Resources */,
 				3A5CDAD21F7C9A1200C2121C /* LaunchScreen.storyboard in Resources */,
 				3A5CDADE1F7C9C0D00C2121C /* Doc in Resources */,
@@ -179,6 +188,7 @@
 			files = (
 				3A5CDACA1F7C9A1200C2121C /* ViewController.m in Sources */,
 				3A5CDAC71F7C9A1200C2121C /* AppDelegate.m in Sources */,
+				3AEDBF741F7E1FA1002C62D9 /* UIView+XEL_Frame.m in Sources */,
 				3A5CDAC41F7C9A1200C2121C /* main.m in Sources */,
 				3AD384EC1F7CB38500314C5A /* XEL_ControlView.m in Sources */,
 				3A5CDADC1F7C9BCA00C2121C /* XEL_PlayerView.m in Sources */,

@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface XEL_ControlView : UIView
-
+- (void)showOrHiddenControlView;
 @end

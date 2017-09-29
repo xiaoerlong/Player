@@ -145,7 +145,7 @@
 
 // 显示或者隐藏控制视图
 - (void)showOrHiddenControlView {
-    self.controlView.hidden = !self.controlView.hidden;
+    [self.controlView showOrHiddenControlView];
 }
 
 #pragma mark -

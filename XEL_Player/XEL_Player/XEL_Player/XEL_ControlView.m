@@ -7,13 +7,22 @@
 //
 
 #import "XEL_ControlView.h"
+#import "UIView+XEL_Frame.h"
 
 static const CGFloat topHeight = 50;
 static const CGFloat bottomHeight = 50;
 
 @interface XEL_ControlView ()
+// 顶部的控制视图
 @property (nonatomic, strong) UIView *topView;
+// 底部的控制视图
 @property (nonatomic, strong) UIView *bottomView;
+// 锁定屏幕按钮
+@property (nonatomic, strong) UIButton *lockButton;
+// control view是否正在显示
+@property (nonatomic, assign) BOOL controlViewIsShowing;
+// 是否锁定屏幕
+@property (nonatomic, assign) BOOL lockScreen;
 @end
 
 @implementation XEL_ControlView
@@ -24,6 +33,11 @@ static const CGFloat bottomHeight = 50;
     if (self) {
         [self addSubview:self.topView];
         [self addSubview:self.bottomView];
+        
+        [self addSubview:self.lockButton];
+        
+        self.controlViewIsShowing = YES;
+        self.lockScreen = NO;
     }
     return self;
 }
@@ -36,10 +50,60 @@ static const CGFloat bottomHeight = 50;
     
     self.topView.frame = CGRectMake(0, 0, width, topHeight);
     self.bottomView.frame = CGRectMake(0, height - bottomHeight, width, bottomHeight);
+    
+    self.lockButton.frame = CGRectMake(15, 0, 40, 40);
+    self.lockButton.xel_centerY = self.center.y;
+}
+
+#pragma mark -
+#pragma mark Action
+// 锁定屏幕 竖屏的情况下不显示锁屏按钮
+- (void)lockAction:(UIButton *)btn {
+    if (self.lockScreen == NO) {
+        [_lockButton setImage:[UIImage imageNamed:[@"XEL_Player.bundle" stringByAppendingPathComponent:@"ZFPlayer_lock-nor"]] forState:UIControlStateNormal];
+        NSLog(@"锁定屏幕");
+        [self hiddenControlView];
+    } else {
+        [_lockButton setImage:[UIImage imageNamed:[@"XEL_Player.bundle" stringByAppendingPathComponent:@"ZFPlayer_unlock-nor"]] forState:UIControlStateNormal];
+        NSLog(@"解锁屏幕");
+        [self showControlView];
+    }
+    self.lockScreen = !self.lockScreen;
 }
 
 #pragma mark -
 #pragma mark Private
+//
+- (void)showOrHiddenControlView {
+    if (self.controlViewIsShowing == YES) {
+        [self hiddenControlView];
+    } else {
+        [self showControlView];
+    }
+}
+// 隐藏control view
+- (void)hiddenControlView {
+    [UIView animateWithDuration:0.35 animations:^{
+        self.topView.alpha = 0;
+        self.bottomView.alpha = 0;
+        self.lockButton.alpha = 0;
+        self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+    } completion:^(BOOL finished) {
+        self.controlViewIsShowing = NO;
+    }];
+}
+
+// 显示control view
+- (void)showControlView {
+    [UIView animateWithDuration:0.35 animations:^{
+        self.topView.alpha = 1;
+        self.bottomView.alpha = 1;
+        self.lockButton.alpha = 1;
+        self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
+    } completion:^(BOOL finished) {
+        self.controlViewIsShowing = YES;
+    }];
+}
 
 #pragma mark -
 #pragma mark Getter
@@ -58,6 +122,15 @@ static const CGFloat bottomHeight = 50;
         _bottomView.backgroundColor = [UIColor greenColor];
     }
     return _bottomView;
+}
+
+- (UIButton *)lockButton {
+    if (!_lockButton) {
+        _lockButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_lockButton setImage:[UIImage imageNamed:[@"XEL_Player.bundle" stringByAppendingPathComponent:@"ZFPlayer_unlock-nor"]] forState:UIControlStateNormal];
+        [_lockButton addTarget:self action:@selector(lockAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _lockButton;
 }
 
 @end
