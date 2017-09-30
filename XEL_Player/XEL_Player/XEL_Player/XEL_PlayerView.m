@@ -10,7 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "XEL_ControlView.h"
 
-@interface XEL_PlayerView () <UIGestureRecognizerDelegate>
+@interface XEL_PlayerView () <UIGestureRecognizerDelegate, XEL_ControlViewDelegate>
 //======播放相关组件======
 @property (nonatomic, strong) AVPlayer *player;
 @property (nonatomic, strong) AVPlayerLayer *playerLayer;
@@ -63,12 +63,16 @@
 #pragma mark KVO
 // 添加KVO
 - (void)addObserver {
+    // 状态监听
     [_playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
+    // 缓冲监听
+    [_playerItem addObserver:self forKeyPath:@"loadedTimeRanges" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 // 注销KVO
 - (void)removeObserver {
     [_playerItem removeObserver:self forKeyPath:@"status"];
+    [_playerItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
@@ -94,6 +98,17 @@
                 _playerState = XELPlayerStatePlay;
                 break;
         }
+    } else if ([keyPath isEqualToString:@"loadedTimeRanges"]) {
+        NSArray *range = change[NSKeyValueChangeNewKey];
+        // 本次缓冲的时间范围
+        CMTimeRange timeRange = [range.firstObject CMTimeRangeValue];
+        float startSeconds = CMTimeGetSeconds(timeRange.start);
+        float durationSeconds = CMTimeGetSeconds(timeRange.duration);
+        // 缓冲总长度
+        NSTimeInterval totalBuffer = startSeconds + durationSeconds;
+        // 视频总长度
+        NSTimeInterval totalTime = CMTimeGetSeconds(_playerItem.duration);
+        [_controlView xel_playerBuffer:totalBuffer playerItemTime:totalTime];
     }
 }
 
@@ -130,7 +145,27 @@
         return;
     }
     _playerState = XELPlayerStatePlay;
+    AVPlayerItem *playItem = self.player.currentItem;
+    // 添加对播放进度的监控
+    __weak typeof(self) weakSelf = self;
+    [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 1) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        float current = CMTimeGetSeconds(time);
+        float total = CMTimeGetSeconds(playItem.duration);
+        if (current) {
+            [strongSelf.controlView xel_playerCurrentPlayTime:current playerItemTime:total];
+        }
+    }];
     [_player play];
+}
+
+// 暂停
+- (void)pause {
+    if (_playerState == XELPlayerStatePause) {
+        return;
+    }
+    _playerState = XELPlayerStatePause;
+    [_player pause];
 }
 
 // 单击
@@ -172,10 +207,34 @@
 }
 
 #pragma mark -
+#pragma mark XEL_ControlViewDelegate
+// 播放
+- (void)controlViewTapPlayAction {
+    [self play];
+}
+
+// 暂停
+- (void)controlViewTapPauseAction {
+    [self pause];
+}
+
+// 跳转到指定时间播放
+- (void)playForSeekTime:(CGFloat)time {
+    CGFloat totalTime = CMTimeGetSeconds(self.player.currentItem.duration);
+    [self.player seekToTime:CMTimeMake(time * totalTime, 1) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+}
+
+// 切换分辨率
+- (void)controlViewTapResolutionAction {
+    NSLog(@"切换分辨率");
+}
+
+#pragma mark -
 #pragma mark Setter
 - (void)setURL:(NSURL *)URL {
     _URL = URL;
     _controlView = [[XEL_ControlView alloc] initWithFrame:self.bounds];
+    _controlView.delegate = self;
     [self addSubview:_controlView];
     [self configurePlayerComponents];
     

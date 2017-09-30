@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface UIView (XEL_Frame)
+@property (nonatomic, assign) CGFloat xel_x;
 @property (nonatomic, assign) CGFloat xel_width;
 @property (nonatomic, assign) CGFloat xel_height;
 @property (nonatomic, assign) CGFloat xel_centerY;

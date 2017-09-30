@@ -9,6 +9,16 @@
 #import "UIView+XEL_Frame.h"
 
 @implementation UIView (XEL_Frame)
+- (void)setXel_x:(CGFloat)xel_x {
+    CGRect frame = self.frame;
+    frame.origin.x = xel_x;
+    self.frame = frame;
+}
+
+- (CGFloat)xel_x {
+    return self.frame.origin.x;
+}
+
 - (void)setXel_width:(CGFloat)xel_width {
     CGRect frame = self.frame;
     frame.size.width = xel_width;

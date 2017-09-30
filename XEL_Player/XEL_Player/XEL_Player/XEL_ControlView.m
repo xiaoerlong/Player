@@ -8,6 +8,7 @@
 
 #import "XEL_ControlView.h"
 #import "UIView+XEL_Frame.h"
+#import "XEL_ProgressView.h"
 
 static const CGFloat topHeight = 50;
 static const CGFloat bottomHeight = 50;
@@ -25,6 +26,10 @@ static const CGFloat bottomHeight = 50;
 @property (nonatomic, strong) UIButton *playbackButton;
 // 锁定屏幕按钮
 @property (nonatomic, strong) UIButton *lockButton;
+// 进度条
+@property (nonatomic, strong) XEL_ProgressView *progressView;
+// 分辨率按钮
+@property (nonatomic, strong) UIButton *resolutionButton;
 // control view是否正在显示
 @property (nonatomic, assign) BOOL controlViewIsShowing;
 // 是否锁定屏幕
@@ -59,7 +64,9 @@ static const CGFloat bottomHeight = 50;
     self.titleLabel.frame = CGRectMake(65, 0, self.topView.xel_width - 65 - 65, self.topView.xel_height);
     
     self.bottomView.frame = CGRectMake(0, height - bottomHeight, width, bottomHeight);
-    self.playbackButton.frame = CGRectMake(10, 0, 40, self.topView.xel_height);
+    self.playbackButton.frame = CGRectMake(10, 0, 40, bottomHeight);
+    self.resolutionButton.frame = CGRectMake(self.bottomView.xel_width - 60 - 10, 0, 60, bottomHeight);
+    self.progressView.frame = CGRectMake(CGRectGetMaxX(self.playbackButton.frame) + 10, 0, self.xel_width - CGRectGetMaxX(self.playbackButton.frame) - 10 - CGRectGetWidth(self.resolutionButton.frame) - 10, self.bottomView.xel_height);
     
     self.lockButton.frame = CGRectMake(15, 0, 40, 40);
     self.lockButton.xel_centerY = self.center.y;
@@ -91,15 +98,28 @@ static const CGFloat bottomHeight = 50;
     if (btn.selected) { // 正在播放中
         // 点击按钮暂停
         [self xel_playerPlayBackButtonState:NO];
+        if (_delegate && [_delegate respondsToSelector:@selector(controlViewTapPlayAction)]) {
+            [_delegate controlViewTapPlayAction];
+        }
     } else {
         // 点击按钮播放
         [self xel_playerPlayBackButtonState:YES];
+        if (_delegate && [_delegate respondsToSelector:@selector(controlViewTapPauseAction)]) {
+            [_delegate controlViewTapPauseAction];
+        }
+    }
+}
+
+// 切换分辨率
+- (void)resolutionAction:(UIButton *)btn {
+    if (_delegate && [_delegate respondsToSelector:@selector(controlViewTapResolutionAction)]) {
+        [_delegate controlViewTapResolutionAction];
     }
 }
 
 #pragma mark -
-#pragma mark Private
-//
+#pragma mark Public
+// 显示或隐藏 control view
 - (void)xel_showOrHiddenControlView {
     if (self.controlViewIsShowing == YES) {
         [self hiddenControlView];
@@ -107,6 +127,25 @@ static const CGFloat bottomHeight = 50;
         [self showControlView];
     }
 }
+
+// 设置播放状态
+- (void)xel_playerPlayBackButtonState:(BOOL)isPlay {
+    self.playbackButton.selected = isPlay;
+}
+
+// 刷新缓冲进度
+- (void)xel_playerBuffer:(NSTimeInterval)totalBuffer playerItemTime:(NSTimeInterval)totalTime {
+    [self.progressView setBuffer:totalBuffer/totalTime];
+}
+
+// 播放进度更新
+- (void)xel_playerCurrentPlayTime:(NSTimeInterval)current playerItemTime:(NSTimeInterval)totalTime {
+    [self.progressView updatePlayProgress:current total:totalTime];
+}
+
+#pragma mark -
+#pragma mark Private
+
 // 隐藏control view
 - (void)hiddenControlView {
     [UIView animateWithDuration:0.35 animations:^{
@@ -131,9 +170,6 @@ static const CGFloat bottomHeight = 50;
     }];
 }
 
-- (void)xel_playerPlayBackButtonState:(BOOL)isPlay {
-    self.playbackButton.selected = isPlay;
-}
 
 #pragma mark -
 #pragma mark Setter
@@ -173,10 +209,25 @@ static const CGFloat bottomHeight = 50;
         
         // 播放控制按钮 播放/暂停
         _playbackButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_playbackButton setImage:[UIImage imageNamed:[@"XEL_Player.bundle" stringByAppendingPathComponent:@"ZFPlayer_play"]] forState:UIControlStateNormal];
-        [_playbackButton setImage:[UIImage imageNamed:[@"XEL_Player.bundle" stringByAppendingPathComponent:@"ZFPlayer_pause"]] forState:UIControlStateSelected];
+        [_playbackButton setImage:[UIImage imageNamed:[@"XEL_Player.bundle" stringByAppendingPathComponent:@"ZFPlayer_pause"]] forState:UIControlStateNormal];
+        [_playbackButton setImage:[UIImage imageNamed:[@"XEL_Player.bundle" stringByAppendingPathComponent:@"ZFPlayer_play"]] forState:UIControlStateSelected];
         [_playbackButton addTarget:self action:@selector(playbackAction:) forControlEvents:UIControlEventTouchUpInside];
         [_bottomView addSubview:_playbackButton];
+        // 进度条
+        _progressView = [[XEL_ProgressView alloc] init];
+        __weak typeof(self) weakSelf = self;
+        _progressView.SliderHandle = ^(CGFloat value) {
+            if (_delegate && [_delegate respondsToSelector:@selector(playForSeekTime:)]) {
+                [weakSelf.delegate playForSeekTime:value];
+            }
+        };
+        [_bottomView addSubview:_progressView];
+        // 分辨率
+        _resolutionButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_resolutionButton setTitle:@"普清" forState:UIControlStateNormal];
+        [_resolutionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_resolutionButton addTarget:self action:@selector(resolutionAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_bottomView addSubview:_resolutionButton];
     }
     return _bottomView;
 }
@@ -189,5 +240,6 @@ static const CGFloat bottomHeight = 50;
     }
     return _lockButton;
 }
+
 
 @end
