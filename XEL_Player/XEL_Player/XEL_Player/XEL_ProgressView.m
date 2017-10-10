@@ -72,6 +72,12 @@
     [self layoutIfNeeded];
 }
 
+- (void)setVideoTotalTime:(NSTimeInterval)totalTime {
+    self.timeLabel.text = [NSString stringWithFormat:@"00:00/%@", [self transformTime:totalTime]];
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
+}
+
 #pragma mark -
 #pragma mark Private
 // 将秒转为时分秒表示
@@ -126,7 +132,7 @@
         _timeLabel = [[UILabel alloc] init];
         _timeLabel.backgroundColor = [UIColor clearColor];
         _timeLabel.textColor = [UIColor whiteColor];
-        _timeLabel.text = @"--:--/--:--";
+        _timeLabel.text = @"00:00/00:00";
         _timeLabel.textAlignment = NSTextAlignmentCenter;
         [_timeLabel sizeToFit];
     }

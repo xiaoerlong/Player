@@ -42,6 +42,7 @@ static const CGFloat bottomHeight = 50;
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        // default
         [self addSubview:self.topView];
         [self addSubview:self.bottomView];
         
@@ -98,14 +99,14 @@ static const CGFloat bottomHeight = 50;
     if (btn.selected) { // 正在播放中
         // 点击按钮暂停
         [self xel_playerPlayBackButtonState:NO];
-        if (_delegate && [_delegate respondsToSelector:@selector(controlViewTapPlayAction)]) {
-            [_delegate controlViewTapPlayAction];
+        if (_delegate && [_delegate respondsToSelector:@selector(controlViewTapPauseAction)]) {
+            [_delegate controlViewTapPauseAction];
         }
     } else {
         // 点击按钮播放
         [self xel_playerPlayBackButtonState:YES];
-        if (_delegate && [_delegate respondsToSelector:@selector(controlViewTapPauseAction)]) {
-            [_delegate controlViewTapPauseAction];
+        if (_delegate && [_delegate respondsToSelector:@selector(controlViewTapPlayAction)]) {
+            [_delegate controlViewTapPlayAction];
         }
     }
 }
@@ -143,6 +144,11 @@ static const CGFloat bottomHeight = 50;
     [self.progressView updatePlayProgress:current total:totalTime];
 }
 
+// 视频总时长
+- (void)xel_playerTotalTime:(NSTimeInterval)totalTime {
+    [self.progressView setVideoTotalTime:totalTime];
+}
+
 #pragma mark -
 #pragma mark Private
 
@@ -178,6 +184,7 @@ static const CGFloat bottomHeight = 50;
     self.titleLabel.text = title;
 }
 
+
 #pragma mark -
 #pragma mark Getter
 
@@ -209,8 +216,8 @@ static const CGFloat bottomHeight = 50;
         
         // 播放控制按钮 播放/暂停
         _playbackButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_playbackButton setImage:[UIImage imageNamed:[@"XEL_Player.bundle" stringByAppendingPathComponent:@"ZFPlayer_pause"]] forState:UIControlStateNormal];
-        [_playbackButton setImage:[UIImage imageNamed:[@"XEL_Player.bundle" stringByAppendingPathComponent:@"ZFPlayer_play"]] forState:UIControlStateSelected];
+        [_playbackButton setImage:[UIImage imageNamed:[@"XEL_Player.bundle" stringByAppendingPathComponent:@"ZFPlayer_play"]] forState:UIControlStateNormal];
+        [_playbackButton setImage:[UIImage imageNamed:[@"XEL_Player.bundle" stringByAppendingPathComponent:@"ZFPlayer_pause"]] forState:UIControlStateSelected];
         [_playbackButton addTarget:self action:@selector(playbackAction:) forControlEvents:UIControlEventTouchUpInside];
         [_bottomView addSubview:_playbackButton];
         // 进度条

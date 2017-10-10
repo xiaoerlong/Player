@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C7220191F887F0F006582AD /* XEL_TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7220181F887F0F006582AD /* XEL_TableViewController.m */; };
+		0C72201C1F887F66006582AD /* XEL_TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C72201B1F887F66006582AD /* XEL_TableViewCell.m */; };
 		3A5CDAC41F7C9A1200C2121C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5CDAC31F7C9A1200C2121C /* main.m */; };
 		3A5CDAC71F7C9A1200C2121C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5CDAC61F7C9A1200C2121C /* AppDelegate.m */; };
 		3A5CDACA1F7C9A1200C2121C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5CDAC91F7C9A1200C2121C /* ViewController.m */; };
@@ -23,6 +25,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0C7220171F887F0F006582AD /* XEL_TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XEL_TableViewController.h; sourceTree = "<group>"; };
+		0C7220181F887F0F006582AD /* XEL_TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XEL_TableViewController.m; sourceTree = "<group>"; };
+		0C72201A1F887F66006582AD /* XEL_TableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XEL_TableViewCell.h; sourceTree = "<group>"; };
+		0C72201B1F887F66006582AD /* XEL_TableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XEL_TableViewCell.m; sourceTree = "<group>"; };
 		3A1901AB1F7E578A005471F6 /* XEL_ControlViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XEL_ControlViewDelegate.h; sourceTree = "<group>"; };
 		3A5CDABF1F7C9A1200C2121C /* XEL_Player.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XEL_Player.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A5CDAC31F7C9A1200C2121C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -82,6 +88,10 @@
 				3A5CDAC61F7C9A1200C2121C /* AppDelegate.m */,
 				3A5CDAC81F7C9A1200C2121C /* ViewController.h */,
 				3A5CDAC91F7C9A1200C2121C /* ViewController.m */,
+				0C7220171F887F0F006582AD /* XEL_TableViewController.h */,
+				0C7220181F887F0F006582AD /* XEL_TableViewController.m */,
+				0C72201A1F887F66006582AD /* XEL_TableViewCell.h */,
+				0C72201B1F887F66006582AD /* XEL_TableViewCell.m */,
 				3A5CDACB1F7C9A1200C2121C /* Main.storyboard */,
 				3A5CDACE1F7C9A1200C2121C /* Assets.xcassets */,
 				3A5CDAD01F7C9A1200C2121C /* LaunchScreen.storyboard */,
@@ -196,8 +206,10 @@
 				3A5CDACA1F7C9A1200C2121C /* ViewController.m in Sources */,
 				3A854FE91F7F2C5B00F5030A /* XEL_ProgressView.m in Sources */,
 				3A5CDAC71F7C9A1200C2121C /* AppDelegate.m in Sources */,
+				0C7220191F887F0F006582AD /* XEL_TableViewController.m in Sources */,
 				3AEDBF741F7E1FA1002C62D9 /* UIView+XEL_Frame.m in Sources */,
 				3A5CDAC41F7C9A1200C2121C /* main.m in Sources */,
+				0C72201C1F887F66006582AD /* XEL_TableViewCell.m in Sources */,
 				3AD384EC1F7CB38500314C5A /* XEL_ControlView.m in Sources */,
 				3A5CDADC1F7C9BCA00C2121C /* XEL_PlayerView.m in Sources */,
 			);

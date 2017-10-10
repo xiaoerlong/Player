@@ -17,6 +17,8 @@
 - (void)xel_showOrHiddenControlView;
 // 播放按钮的状态
 - (void)xel_playerPlayBackButtonState:(BOOL)isPlay;
+// 视频总时长
+- (void)xel_playerTotalTime:(NSTimeInterval)totalTime;
 // 设置缓冲进度
 - (void)xel_playerBuffer:(NSTimeInterval)totalBuffer playerItemTime:(NSTimeInterval)totalTime;
 // 播放进度更新

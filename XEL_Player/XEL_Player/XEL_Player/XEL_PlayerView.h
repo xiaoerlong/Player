@@ -33,4 +33,8 @@ typedef NS_ENUM(NSUInteger, XELPlayerLayerGravity) {
 /// 填充模式
 @property (nonatomic, assign) XELPlayerLayerGravity playerLayerGravity;
 
+/// 当cell不在屏幕中的时候停止播放
+@property (nonatomic, assign) BOOL stopPlayWhileCellNotVisable;
+
+
 @end

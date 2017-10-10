@@ -89,13 +89,16 @@
             case AVPlayerItemStatusReadyToPlay:
                 NSLog(@"准备播放");
                 /* 重新设置layer的frame */
-//                [self setNeedsLayout];
+                [self setNeedsLayout];
                 [self layoutIfNeeded];
                 /*========*/
                 
                 // 添加playerLayer到layer  先调用play方法，再将playerLayer添加到layer中，可以实现播放的时候显示
                 [self.layer insertSublayer:self.playerLayer atIndex:0];
-                _playerState = XELPlayerStatePlay;
+                // 获取总时长
+                AVPlayerItem *playItem = self.player.currentItem;
+                float total = CMTimeGetSeconds(playItem.duration);
+                [self.controlView xel_playerTotalTime:total];
                 break;
         }
     } else if ([keyPath isEqualToString:@"loadedTimeRanges"]) {
@@ -117,7 +120,6 @@
 #pragma mark Player
 // 配置播放相关组件
 - (void)configurePlayerComponents {
-    
     _urlAsset = [AVURLAsset assetWithURL:_URL];
     _playerItem = [AVPlayerItem playerItemWithAsset:_urlAsset];
     _player = [AVPlayer playerWithPlayerItem:_playerItem];
@@ -130,9 +132,18 @@
     } else {
         // 网络视频
         self.playerState = XELPlayerStateBuffering;
+        AVPlayerItem *playItem = self.player.currentItem;
+        // 添加对播放进度的监控
+        __weak typeof(self) weakSelf = self;
+        [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 1) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            float current = CMTimeGetSeconds(time);
+            float total = CMTimeGetSeconds(playItem.duration);
+            if (current) {
+                [strongSelf.controlView xel_playerCurrentPlayTime:current playerItemTime:total];
+            }
+        }];
     }
-    
-    [self play];
     
     [self addObserver];
 }
@@ -145,17 +156,6 @@
         return;
     }
     _playerState = XELPlayerStatePlay;
-    AVPlayerItem *playItem = self.player.currentItem;
-    // 添加对播放进度的监控
-    __weak typeof(self) weakSelf = self;
-    [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 1) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        float current = CMTimeGetSeconds(time);
-        float total = CMTimeGetSeconds(playItem.duration);
-        if (current) {
-            [strongSelf.controlView xel_playerCurrentPlayTime:current playerItemTime:total];
-        }
-    }];
     [_player play];
 }
 
@@ -233,10 +233,12 @@
 #pragma mark Setter
 - (void)setURL:(NSURL *)URL {
     _URL = URL;
-    _controlView = [[XEL_ControlView alloc] initWithFrame:self.bounds];
-    _controlView.delegate = self;
-    [self addSubview:_controlView];
-    [self configurePlayerComponents];
+    if (_controlView == nil) {
+        _controlView = [[XEL_ControlView alloc] initWithFrame:self.bounds];
+        _controlView.delegate = self;
+        [self addSubview:_controlView];
+        [self configurePlayerComponents];
+    }
     
     // 添加手势
     [self createGesture];
@@ -288,6 +290,8 @@
         }
     }
 }
+
+
 
 #pragma mark -
 #pragma mark Getter
